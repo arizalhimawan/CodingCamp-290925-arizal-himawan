@@ -147,7 +147,7 @@ button:hover {
 
 .todos-section h2 {
     margin-bottom: 1rem;
-    align-self: center;
+    text-align: center;
 }
 
 .todos-container {
