@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi To-Do List</title>
+    <link rel="stylesheet" href="css\style.css">
+</head>
+<body>
+    <header>
+        <h1>To-Do List Saya</h1>
+    </header>
+    
+    <main>
+        <section class="input-section">
+            <form id="todo-form">
+                <div class="form-group">
+                    <label for="todo-input">Tugas Baru</label>
+                    <input type="text" id="todo-input" placeholder="Masukkan tugas baru..." required>
+                </div>
+                <div class="form-group">
+                    <label for="date-input">Tanggal</label>
+                    <input type="date" id="date-input" required>
+                </div>
+                <button type="submit">Tambah Tugas</button>
+            </form>
+        </section>
+        
+        <section class="filter-section">
+            <h2>Filter Tugas</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Semua</button>
+                <button class="filter-btn" data-filter="completed">Selesai</button>
+                <button class="filter-btn" data-filter="pending">Belum Selesai</button>
+            </div>
+            <button id="delete-all-btn" class="delete-all">Hapus Semua</button>
+        </section>
+        
+        <section class="todos-section">
+            <h2>Daftar Tugas</h2>
+            <div id="todos-container" class="todos-container">
+                <!-- Todo items will be inserted here by JavaScript -->
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>© 2023 Aplikasi To-Do List</p>
+    </footer>
+
+    <script src="js\script.js"></script>
+</body>
+</html>
