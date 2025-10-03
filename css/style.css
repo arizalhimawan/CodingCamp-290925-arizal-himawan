@@ -48,15 +48,22 @@ section {
     flex-direction: column;
 }
 
+.form-inputs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
 .form-group {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    margin-bottom: 1rem;
 }
 
 .form-group label {
     margin-bottom: 0.5rem;
     font-weight: 600;
+    align-self: center;
 }
 
 .form-group input {
@@ -64,6 +71,7 @@ section {
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 1rem;
+    text-align: center;
 }
 
 .form-group input:focus {
@@ -72,6 +80,7 @@ section {
 }
 
 button {
+    width: -webkit-fill-available;
     padding: 0.75rem 1.5rem;
     background-color: #3498db;
     color: white;
@@ -86,10 +95,6 @@ button:hover {
     background-color: #2980b9;
 }
 
-#todo-form button {
-    align-self: flex-start;
-}
-
 .filter-section {
     display: flex;
     flex-direction: column;
@@ -97,16 +102,17 @@ button:hover {
 
 .filter-section h2 {
     margin-bottom: 1rem;
+    align-self: center;
 }
 
 .filter-groups {
     display: flex;
-    flex-direction: column;
     gap: 1rem;
     margin-bottom: 1rem;
 }
 
 .filter-group {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -114,6 +120,7 @@ button:hover {
 
 .filter-group label {
     font-weight: 600;
+    align-self: center;
 }
 
 .filter-group select {
@@ -122,6 +129,7 @@ button:hover {
     border-radius: 4px;
     font-size: 1rem;
     background-color: white;
+    text-align: center;
 }
 
 .filter-group select:focus {
@@ -131,11 +139,15 @@ button:hover {
 
 .delete-all {
     background-color: #e74c3c;
-    align-self: flex-start;
 }
 
 .delete-all:hover {
     background-color: #c0392b;
+}
+
+.todos-section h2 {
+    margin-bottom: 1rem;
+    align-self: center;
 }
 
 .todos-container {
@@ -159,6 +171,9 @@ button:hover {
 
 .todo-item.completed {
     background-color: #f8f9fa;
+}
+
+.todo-item.completed .todo-content {
     opacity: 0.7;
 }
 
@@ -238,7 +253,9 @@ footer {
         padding: 1rem;
     }
     
+    .form-inputs,
     .filter-groups {
+        flex-direction: column;
         gap: 0.75rem;
     }
     
