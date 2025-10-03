@@ -5,11 +5,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const todoInput = document.getElementById('todo-input');
     const dateInput = document.getElementById('date-input');
     const todosContainer = document.getElementById('todos-container');
-    const filterButtons = document.querySelectorAll('.filter-btn');
+    const statusFilter = document.getElementById('status-filter');
+    const dateFilter = document.getElementById('date-filter');
     const deleteAllBtn = document.getElementById('delete-all-btn');
     
     // State
-    let currentFilter = 'all';
+    let currentStatusFilter = 'all';
+    let currentDateFilter = 'all';
     let todos = JSON.parse(localStorage.getItem('todos')) || [];
     
     // Inisialisasi aplikasi
@@ -21,9 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Setup event listeners
     function setupEventListeners() {
         todoForm.addEventListener('submit', handleAddTodo);
-        filterButtons.forEach(btn => {
-            btn.addEventListener('click', handleFilterChange);
-        });
+        statusFilter.addEventListener('change', handleStatusFilterChange);
+        dateFilter.addEventListener('change', handleDateFilterChange);
         deleteAllBtn.addEventListener('click', handleDeleteAll);
     }
     
@@ -63,22 +64,15 @@ document.addEventListener('DOMContentLoaded', function() {
         renderTodos();
     }
     
-    // Handle perubahan filter
-    function handleFilterChange(e) {
-        const filter = e.target.dataset.filter;
-        
-        // Update state filter
-        currentFilter = filter;
-        
-        // Update UI button active state
-        filterButtons.forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.dataset.filter === filter) {
-                btn.classList.add('active');
-            }
-        });
-        
-        // Render ulang dengan filter baru
+    // Handle perubahan filter status
+    function handleStatusFilterChange(e) {
+        currentStatusFilter = e.target.value;
+        renderTodos();
+    }
+    
+    // Handle perubahan filter tanggal
+    function handleDateFilterChange(e) {
+        currentDateFilter = e.target.value;
         renderTodos();
     }
     
@@ -131,16 +125,42 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Render todos berdasarkan filter
-    function renderTodos() {
-        // Filter todos berdasarkan state currentFilter
-        let filteredTodos = todos;
+    // Fungsi untuk menentukan kategori tanggal
+    function getDateCategory(todoDate) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset ke awal hari
+        const todo = new Date(todoDate);
+        todo.setHours(0, 0, 0, 0);
         
-        if (currentFilter === 'completed') {
-            filteredTodos = todos.filter(todo => todo.completed);
-        } else if (currentFilter === 'pending') {
-            filteredTodos = todos.filter(todo => !todo.completed);
+        if (todo.getTime() === today.getTime()) {
+            return 'today';
+        } else if (todo < today) {
+            return 'past';
+        } else {
+            return 'future';
         }
+    }
+    
+    // Render todos berdasarkan filter status dan tanggal
+    function renderTodos() {
+        // Filter todos berdasarkan status
+        let filteredTodos = todos.filter(todo => {
+            if (currentStatusFilter === 'completed') {
+                return todo.completed;
+            } else if (currentStatusFilter === 'pending') {
+                return !todo.completed;
+            }
+            return true; // all
+        });
+        
+        // Filter lebih lanjut berdasarkan tanggal
+        filteredTodos = filteredTodos.filter(todo => {
+            if (currentDateFilter === 'all') {
+                return true;
+            }
+            const category = getDateCategory(todo.date);
+            return category === currentDateFilter;
+        });
         
         // Kosongkan container
         todosContainer.innerHTML = '';
@@ -148,9 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Tampilkan pesan jika tidak ada todos
         if (filteredTodos.length === 0) {
             const emptyMessage = document.createElement('p');
-            emptyMessage.textContent = currentFilter === 'all' 
-                ? 'Belum ada tugas yang ditambahkan.' 
-                : `Tidak ada tugas ${currentFilter === 'completed' ? 'selesai' : 'belum selesai'}.`;
+            emptyMessage.textContent = getEmptyMessage();
             emptyMessage.classList.add('empty-message');
             todosContainer.appendChild(emptyMessage);
             return;
@@ -188,6 +206,31 @@ document.addEventListener('DOMContentLoaded', function() {
             
             todosContainer.appendChild(todoElement);
         });
+    }
+    
+    // Fungsi untuk pesan kosong berdasarkan filter
+    function getEmptyMessage() {
+        let message = 'Tidak ada tugas yang sesuai dengan filter.';
+        
+        if (currentStatusFilter !== 'all') {
+            message = `Tidak ada tugas ${currentStatusFilter === 'completed' ? 'selesai' : 'belum selesai'}.`;
+        }
+        
+        if (currentDateFilter !== 'all') {
+            const dateText = currentDateFilter === 'today' ? 'hari ini' : 
+                           currentDateFilter === 'past' ? 'yang lalu' : 'yang akan datang';
+            if (currentStatusFilter === 'all') {
+                message = `Tidak ada tugas untuk ${dateText}.`;
+            } else {
+                message += ` ${dateText}.`;
+            }
+        }
+        
+        if (currentStatusFilter === 'all' && currentDateFilter === 'all') {
+            message = 'Belum ada tugas yang ditambahkan.';
+        }
+        
+        return message;
     }
     
     // Jalankan aplikasi
