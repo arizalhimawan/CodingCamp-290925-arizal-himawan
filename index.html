@@ -28,10 +28,24 @@
         
         <section class="filter-section">
             <h2>Filter Tugas</h2>
-            <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">Semua</button>
-                <button class="filter-btn" data-filter="completed">Selesai</button>
-                <button class="filter-btn" data-filter="pending">Belum Selesai</button>
+            <div class="filter-groups">
+                <div class="filter-group">
+                    <label for="status-filter">Filter Status:</label>
+                    <select id="status-filter">
+                        <option value="all">Semua</option>
+                        <option value="completed">Selesai</option>
+                        <option value="pending">Belum Selesai</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="date-filter">Filter Tanggal:</label>
+                    <select id="date-filter">
+                        <option value="all">Semua</option>
+                        <option value="today">Hari Ini</option>
+                        <option value="past">Yang Lalu</option>
+                        <option value="future">Yang Akan Datang</option>
+                    </select>
+                </div>
             </div>
             <button id="delete-all-btn" class="delete-all">Hapus Semua</button>
         </section>
